@@ -215,41 +215,44 @@ Each notebook includes:
 
 ---
 
-### 🖼️ Example Prediction Snippet (Scratch Removal)
+### 🖼️ Quick Test Function (for inference)
 
-You can use this utility function to quickly test the scratch removal model:
+To run a prediction on a new image (after training or loading a model), use:
 
 ```python
-def display_scratch_removal(image_path, model):
+def display_prediction(image_path, model):
     import cv2
     import matplotlib.pyplot as plt
     import numpy as np
 
     img = cv2.imread(image_path)
-    img = cv2.resize(img, (512, 512)) / 255.0
+    img = cv2.resize(img, (256, 256)) / 255.0
     input_img = np.expand_dims(img, axis=0)
     predicted = model.predict(input_img)[0]
 
     plt.figure(figsize=(10, 5))
     plt.subplot(1, 2, 1)
-    plt.imshow(img[..., ::-1])  # Convert BGR to RGB
-    plt.title("Original (Scratched)")
+    plt.imshow(img[..., ::-1])
+    plt.title("Original Input")
     plt.axis("off")
 
     plt.subplot(1, 2, 2)
     plt.imshow(predicted)
-    plt.title("Restored (Predicted)")
+    plt.title("Model Output")
     plt.axis("off")
 
     plt.show()
 ```
 
-Just run:
+Run the function like this:
 
 ```python
-display_scratch_removal("path/to/your/image.jpg", model)
+display_prediction("your_image_path.jpg", model)
 ```
 
+---
+
+> ✅ Tip: If you don't want to train from scratch, you can directly load pretrained weights from Hugging Face (see [🎯 Load Pretrained Models](#-load-pretrained-models)) and skip to the testing section.
 
 <div align="center">
   <h2>
