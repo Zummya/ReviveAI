@@ -8,12 +8,10 @@
 </p>
 
 <p align="center">
-  <!-- Badges: Replace placeholders with actual links/info -->
   <a href="#"><img src="https://img.shields.io/badge/Build-Passing-brightgreen" alt="Build Status"></a>
-  <a href="link/to/your/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License"></a> <!-- Choose your license -->
+  <a href="link/to/your/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License"></a> 
   <a href="#"><img src="https://img.shields.io/badge/Python-3.8+-blueviolet" alt="Python Version"></a>
   <a href="link/to/your/contributing/guide"><img src="https://img.shields.io/badge/Contributions-Welcome-orange" alt="Contributions Welcome"></a>
-  <!-- Add more badges as needed: dependencies, code style, etc. -->
 </p>
 
 ---
@@ -29,9 +27,9 @@ This project utilizes state-of-the-art deep learning models trained specifically
 ## 🔥 Key Features
 <p align = "center"><img src="./assets/features.png" alt="Features" width="100%" align = "center"/></p>
 
-*   **Image Sharpening:** Enhances fine details and edges for a crisper look.
-*   **Scratch Removal:** Intelligently detects and inpaints scratches and minor damages on photographs.
-*   **Image Colorization:** Adds realistic color to grayscale images.
+*   **✅ Completed - Image Sharpening:** Enhances fine details and edges for a crisper look.
+*   **✅ Completed - Scratch Removal:** Intelligently detects and inpaints scratches and minor damages on photographs.
+*   **🛠️ Work-in-progress - Image Colorization(Coming Soon):** Adds realistic color to grayscale images.
 
 ---
 
@@ -92,19 +90,174 @@ Track the development progress of ReviveAI's key features and components:
 
 ## 🚀 Getting Started
 
-Follow these steps to get ReviveAI running on your local machine.
+Follow these steps to get ReviveAI running on your local machine or in a Jupyter/Kaggle notebook.
 
-**(Rest of the Getting Started section follows...)**
+### 1. Prerequisites
 
-**1. Prerequisites:**
+Ensure you have the following installed:
 
-*   Python (version 3.8 or higher recommended)
-*   Pip (Python package installer)
-*   Git (for cloning the repository)
-*   [Mention any other specific prerequisites, e.g., CUDA for GPU acceleration]
+- Python 3.8 or above  
+- `pip` (Python package manager)  
+- Git (for cloning the repository)  
+- [Hugging Face CLI (optional)](https://huggingface.co/docs/huggingface_hub/quick-start)  
+- Jupyter Notebook or run on [Kaggle](https://kaggle.com) / [Google Colab](https://colab.research.google.com)
 
-**2. Clone the Repository:**
+
+---
+
+### 2. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/ReviveAI.git
+git clone https://github.com/Zummya/ReviveAI.git
 cd ReviveAI
+```
+
+---
+
+### 3. Set Up the Environment
+
+We recommend using a virtual environment:
+
+```bash
+python -m venv env
+source env/bin/activate  # On Windows: env\Scripts\activate
+pip install -r requirements.txt
+```
+
+---
+
+## 🎯 Load Pretrained Models
+
+All models are hosted on the Hugging Face Hub for convenience and version control.
+
+### 🔹 Load Image Sharpening Model
+
+```python
+from huggingface_hub import hf_hub_download
+from tensorflow.keras.models import load_model
+
+model_path = hf_hub_download(
+    repo_id="Sami-on-hugging-face/RevAI_Deblur_Model", 
+    filename="SharpeningModel_512_30Epochs.keras"
+)
+model = load_model(model_path, compile=False)
+```
+
+---
+
+### 🔹 Load Scratch Removal Model
+
+```python
+from huggingface_hub import hf_hub_download
+from tensorflow.keras.models import load_model
+
+model_path = hf_hub_download(
+    repo_id="Sami-on-hugging-face/RevAI_Scratch_Removal_Model", 
+    filename="scratch_removal_test2.h5"
+)
+model = load_model(model_path, compile=False)
+```
+
+
+---
+
+### 📁 Folder Structure
+
+```bash
+ReviveAI/
+│
+├── README.md
+├── .gitignore
+├── requirements.txt
+│
+├── models/
+│   ├── sharpening_model.txt         # Hugging Face URL
+│   └── scratch_removal_model.txt    # Hugging Face URL
+│
+├── notebooks/
+│   ├── scratch_removal_notebook.ipynb
+│   └── sharpening_model_notebook.ipynb
+│
+├── before_after_examples/
+│   ├── sharpening/
+│   └── scratch_removal/
+│
+├── assets/
+│   └── revive banner.png, showcase images etc.
+
+```
+
+---
+
+## 🧪 Training & Running the Models
+
+ReviveAI includes end-to-end Jupyter notebooks that allow you to both **train** the models from scratch and **test** them on custom images.
+
+### 📘 Available Notebooks
+
+| Notebook | Description |
+| -------- | ----------- |
+| `sharpening_model_notebook.ipynb` | Train the sharpening (deblurring) model + Run predictions |
+| `scratch_removal_notebook.ipynb` | Train the scratch removal model + Run predictions |
+
+---
+
+### 💡 Notebook Features
+
+Each notebook includes:
+
+- 🧠 **Model Architecture**  
+- 🔁 **Data Loading & Preprocessing**
+- 🏋️ **Training Pipeline** (with adjustable hyperparameters)
+- 💾 **Saving & Exporting Weights**
+- 🔍 **Evaluation**
+- 🖼️ **Visual Demo on Custom Images**
+
+---
+
+### 🖼️ Example Prediction Snippet (Scratch Removal)
+
+You can use this utility function to quickly test the scratch removal model:
+
+```python
+def display_scratch_removal(image_path, model):
+    import cv2
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    img = cv2.imread(image_path)
+    img = cv2.resize(img, (512, 512)) / 255.0
+    input_img = np.expand_dims(img, axis=0)
+    predicted = model.predict(input_img)[0]
+
+    plt.figure(figsize=(10, 5))
+    plt.subplot(1, 2, 1)
+    plt.imshow(img[..., ::-1])  # Convert BGR to RGB
+    plt.title("Original (Scratched)")
+    plt.axis("off")
+
+    plt.subplot(1, 2, 2)
+    plt.imshow(predicted)
+    plt.title("Restored (Predicted)")
+    plt.axis("off")
+
+    plt.show()
+```
+
+Just run:
+
+```python
+display_scratch_removal("path/to/your/image.jpg", model)
+```
+
+
+<div align="center">
+  <h2>
+    <b>ReviveAI</b>
+  </h2>
+  <h3>
+    Made with ❤️ at <a href="https://github.com/ISTE-VIT" target="_blank">ISTE-VIT</a>
+  </h3>
+   
+  ---
+</div>
