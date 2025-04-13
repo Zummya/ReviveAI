@@ -52,9 +52,7 @@ See the results of ReviveAI in action!
 
 ## 🛠️ Tech Stack
 
-The project is built using the following technologies:
-
-<p align="left"> <!-- Or use align="center" if you prefer -->
+<p align="center"> <!-- Or use align="center" if you prefer -->
   <a href="https://www.python.org/" target="_blank">
     <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python"/>
   </a> 
