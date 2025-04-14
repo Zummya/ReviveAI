@@ -80,9 +80,6 @@ Track the development progress of ReviveAI's key features and components:
 | Image Deblurring/Sharpening  | ✅ Completed             | Core model functional      |
 | Scratch Removal              | ✅ Completed             | Core model functional      |
 | Image Colorization           | 🚧 In Progress           | Model integration underway |
-| Website Design (UI/UX)       | ✅ Completed             | Design finalized           |
-| Website Implementation       | ⌛ Pending               | Backend/Frontend dev needed|
-| Website Deployment           | ⌛ Pending               | Requires server setup      |
 
 ---
 
